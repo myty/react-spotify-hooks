@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import { setAccessToken } from './spotify-authentication';
 
 interface ISpotifyContext {
@@ -22,42 +21,28 @@ export function SpotifyContextProvider({
     onError,
     scope,
 }: React.PropsWithChildren<SpotifyContextProviderProps>) {
-    useEffect(() => {
-        const handleWindowLocationChange = () => {
-            try {
-                const params = window.location.hash
-                    .substr(2)
-                    .split('&')
-                    .map(v => v.split('='))
-                    .reduce<any>(
-                        (pre, [key, value]) => ({ ...pre, [key]: value }),
-                        {}
-                    );
+    try {
+        const params = window.location.hash
+            .substr(1)
+            .split('&')
+            .map(v => v.split('='))
+            .reduce<any>((pre, [key, value]) => ({ ...pre, [key]: value }), {});
 
-                if (!!params.token_type && !!params.access_token) {
-                    setAccessToken(params.token_type, params.access_token);
+        if (!!params.token_type && !!params.access_token) {
+            setAccessToken(params.token_type, params.access_token);
 
-                    if (params.state) {
-                        const state = decodeURIComponent(params.state);
-                        const { redirect_uri: redirectUri } = JSON.parse(state);
+            if (params.state) {
+                const state = decodeURIComponent(params.state);
+                const { redirect_uri: redirectUri } = JSON.parse(state);
 
-                        if (redirectUri) {
-                            window.location.href = redirectUri;
-                        }
-                    }
+                if (redirectUri) {
+                    window.location.href = redirectUri;
                 }
-            } catch (err) {
-                onError(err);
             }
-        };
-
-        window.addEventListener('popstate', handleWindowLocationChange);
-        handleWindowLocationChange();
-
-        return () => {
-            window.removeEventListener('popstate', handleWindowLocationChange);
-        };
-    }, [onError]);
+        }
+    } catch (err) {
+        onError(err);
+    }
 
     return (
         <SpotifyContext.Provider value={{ clientId, scope }}>
