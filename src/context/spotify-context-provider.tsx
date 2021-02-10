@@ -3,15 +3,13 @@ import { setAccessToken } from './spotify-authentication';
 
 interface ISpotifyContext {
     clientId: string;
-    scope: string;
-}
-
-interface SpotifyContextProviderProps extends ISpotifyContext {
     onError: (err: any) => any;
+    scope: string;
 }
 
 export const SpotifyContext = React.createContext<ISpotifyContext>({
     clientId: '',
+    onError: () => {},
     scope: '',
 });
 
@@ -20,7 +18,7 @@ export function SpotifyContextProvider({
     clientId,
     onError,
     scope,
-}: React.PropsWithChildren<SpotifyContextProviderProps>) {
+}: React.PropsWithChildren<ISpotifyContext>) {
     try {
         const params = window.location.hash
             .substr(1)
@@ -45,7 +43,7 @@ export function SpotifyContextProvider({
     }
 
     return (
-        <SpotifyContext.Provider value={{ clientId, scope }}>
+        <SpotifyContext.Provider value={{ clientId, onError, scope }}>
             {children}
         </SpotifyContext.Provider>
     );
