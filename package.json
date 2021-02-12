@@ -1,65 +1,70 @@
 {
-  "version": "0.1.0",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "engines": {
-    "node": ">=10"
-  },
-  "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
-  },
-  "peerDependencies": {
-    "react": ">=16"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "tabWidth": 4,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
-  "name": "react-spotify-hooks",
-  "author": "Michael Tyson",
-  "module": "dist/react-spotify-hooks.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/react-spotify-hooks.cjs.production.min.js",
-      "limit": "10 KB"
+    "version": "0.1.0",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "engines": {
+        "node": ">=10"
     },
-    {
-      "path": "dist/react-spotify-hooks.esm.js",
-      "limit": "10 KB"
+    "scripts": {
+        "start": "tsdx watch",
+        "build": "tsdx build",
+        "test": "tsdx test --passWithNoTests",
+        "lint": "tsdx lint",
+        "prepare": "tsdx build",
+        "size": "size-limit",
+        "analyze": "size-limit --why"
+    },
+    "peerDependencies": {
+        "react": ">=16"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "tsdx lint"
+        }
+    },
+    "prettier": {
+        "printWidth": 80,
+        "semi": true,
+        "tabWidth": 4,
+        "singleQuote": true,
+        "trailingComma": "es5"
+    },
+    "name": "react-spotify-hooks",
+    "author": "Michael Tyson",
+    "module": "dist/react-spotify-hooks.esm.js",
+    "size-limit": [
+        {
+            "path": "dist/react-spotify-hooks.cjs.production.min.js",
+            "limit": "10 KB"
+        },
+        {
+            "path": "dist/react-spotify-hooks.esm.js",
+            "limit": "10 KB"
+        }
+    ],
+    "devDependencies": {
+        "@size-limit/preset-small-lib": "^4.9.2",
+        "@types/react": "^17.0.1",
+        "@types/react-dom": "^17.0.0",
+        "branchsite": "^4.0.3",
+        "build-url": "^6.0.1",
+        "husky": "^5.0.9",
+        "np": "^7.3.0",
+        "query-string": "^6.13.8",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "size-limit": "^4.9.2",
+        "tsdx": "^0.14.1",
+        "tslib": "^2.1.0",
+        "typescript": "^4.1.3",
+        "use-async-effect": "^2.2.2"
+    },
+    "np": {
+        "contents": "dist"
     }
-  ],
-  "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.9.2",
-    "@types/react": "^17.0.1",
-    "@types/react-dom": "^17.0.0",
-    "build-url": "^6.0.1",
-    "husky": "^5.0.9",
-    "query-string": "^6.13.8",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "size-limit": "^4.9.2",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.1.0",
-    "typescript": "^4.1.3",
-    "use-async-effect": "^2.2.2"
-  }
 }
