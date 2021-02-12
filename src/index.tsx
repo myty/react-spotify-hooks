@@ -1,6 +1,12 @@
-import * as React from 'react';
+// Hooks
+export * from './hooks';
 
-// Delete me
-export const Thing = () => {
-  return <div>the snozzberries taste like snozzberries</div>;
-};
+// Context Provider
+export { SpotifyContextProvider } from './context/spotify-context-provider';
+
+// Types
+export { SpotifyAlbum } from './models/Spotify/album';
+export { SpotifyArtist } from './models/Spotify/artist';
+export { SpotifyPaging, SpotifyUser } from './models/Spotify/core';
+export { SpotifyPlaylist } from './models/Spotify/playlist';
+export { SpotifyTrackWithMetadata } from './models/Spotify/track';
