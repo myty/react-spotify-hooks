@@ -172,7 +172,6 @@ export function usePlaylist({ id }: UsePlaylistOptions) {
         loadMoreTracks: () => {
             loadMore();
         },
-        loadMoreTracksAsync: loadMore,
         refresh: () => {
             loadData();
         },

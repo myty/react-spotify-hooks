@@ -46,7 +46,7 @@ export function useSpotify() {
 
             return null;
         },
-        [clientId, scope]
+        [clientId, onError, scope]
     );
 
     const getCurrentUserPlaylists = useCallback(
@@ -66,6 +66,9 @@ export function useSpotify() {
 
     return {
         api,
+        clientId,
+        onError,
+        scope,
         getCurrentUserPlaylists,
         getCurrentUserProfile,
         getTracklist,

@@ -1,41 +1,23 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { useSpotify } from '../src/hooks';
-import { SpotifyPlaylist } from '../src/models/Spotify/playlist';
-import { Playlist } from './Playlist';
+import { useEffect } from 'react';
+import { useMyPlaylists } from '../src/hooks';
+import { Playlist } from './playlist';
 
 export default function MyPlaylists() {
-    const { getCurrentUserPlaylists } = useSpotify();
-
-    const [playlists, setPlaylists] = useState<SpotifyPlaylist[]>([]);
-    const [nextPlaylistUrl, setNextPlaylistUrl] = useState<string>();
-    const [loaded, setLoaded] = useState(false);
+    const { playlists, loading, hasMore, loadMore } = useMyPlaylists();
 
     useEffect(() => {
-        if (loaded) {
-            return;
+        if (!loading && hasMore) {
+            loadMore();
         }
-
-        (async function getPlaylists() {
-            const playlistsResult = await getCurrentUserPlaylists(
-                nextPlaylistUrl
-            );
-
-            if (playlistsResult?.next == null) {
-                setLoaded(true);
-            }
-
-            setPlaylists(prev => [...prev, ...(playlistsResult?.items ?? [])]);
-            setNextPlaylistUrl(playlistsResult?.next ?? undefined);
-        })();
-    }, [nextPlaylistUrl]);
+    }, [loading, loadMore, hasMore]);
 
     return (
         <>
             <h1 className="p-4 text-xl font-bold">My Playlists</h1>
             <ul>
                 {playlists.map(playlist => (
-                    <Playlist playlist={playlist} />
+                    <Playlist key={playlist.id} playlist={playlist} />
                 ))}
             </ul>
         </>
