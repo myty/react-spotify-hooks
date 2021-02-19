@@ -11,12 +11,18 @@ or
 yarn add react-spotify-hooks
 ```
 
+## Getting Started
+
+To build and run the example, you will first need to add `.env.local` to the example folder and add something like the following: `SPOTIFY_CLIENT_ID=abcdefghijklmnopqrstuvwxyz`. The spotify client id can be obtained from the Spotify developer dashboard when you create a new app: https://developer.spotify.com/dashboard.
+
+Next, run `yarn` and finally `yarn start` from within the example folder.
+
 ## Example Usage
 
 **SpotifyContextProvider**
 
 ```typescriptreact
-const clientId = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+const clientId = 'abcdefghijklmnopqrstuvwxyz';
 const scope =
     'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private';
 
