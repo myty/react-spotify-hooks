@@ -4,8 +4,7 @@ import {
     getAccessToken,
 } from '../context/spotify-authentication';
 import { SpotifyContext } from '../context/spotify-context-provider';
-import { SpotifyPaging, SpotifyUser } from '../models/Spotify/core';
-import { SpotifyPlaylist } from '../models/Spotify/playlist';
+import { SpotifyPaging } from '../models/Spotify/core';
 import { SpotifyTrackWithMetadata } from '../models/Spotify/track';
 
 const SPOTIFY_BASE_API_URI = 'https://api.spotify.com/v1';
@@ -49,16 +48,6 @@ export function useSpotify() {
         [clientId, onError, scope]
     );
 
-    const getCurrentUserPlaylists = useCallback(
-        (fetchUrl?: string) =>
-            api<SpotifyPaging<SpotifyPlaylist>>(fetchUrl ?? 'me/playlists'),
-        [api]
-    );
-
-    const getCurrentUserProfile = useCallback(() => api<SpotifyUser>('me'), [
-        api,
-    ]);
-
     const getTracklist = useCallback(
         (url: string) => api<SpotifyPaging<SpotifyTrackWithMetadata>>(url),
         [api]
@@ -69,8 +58,6 @@ export function useSpotify() {
         clientId,
         onError,
         scope,
-        getCurrentUserPlaylists,
-        getCurrentUserProfile,
         getTracklist,
     };
 }
