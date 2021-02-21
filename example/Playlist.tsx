@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SpotifyPlaylist } from '../src/models/Spotify/playlist';
+import { SpotifyPlaylist } from '../src';
 
 interface PlaylistProps {
     playlist: SpotifyPlaylist;

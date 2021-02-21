@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useMyPlaylists } from '../src/hooks';
+import { useMyPlaylists } from '../src';
 import { Playlist } from './playlist';
 
 export default function MyPlaylists() {

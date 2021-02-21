@@ -1,6 +1,5 @@
 import buildUrl from 'build-url';
 
-const localStorageKey = 'spotify_auth';
 const spotifyAccountsUrl = 'https://accounts.spotify.com';
 const responseType = 'token';
 
@@ -19,24 +18,4 @@ export function authenticate(clientId: string, scope: string) {
     });
 
     window.location.href = href;
-}
-
-export function getAccessToken() {
-    const spotifyAuth = localStorage.getItem(localStorageKey);
-
-    if (spotifyAuth != null) {
-        return JSON.parse(spotifyAuth);
-    }
-
-    return undefined;
-}
-
-export function setAccessToken(tokenType: string, accessToken: string) {
-    localStorage.setItem(
-        localStorageKey,
-        JSON.stringify({
-            tokenType,
-            accessToken,
-        })
-    );
 }

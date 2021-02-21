@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useUserProfile } from '../src/hooks';
+import { useUserProfile } from '../src';
 
 export default function UserProfile() {
     const { userProfile } = useUserProfile();

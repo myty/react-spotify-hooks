@@ -1,7 +1,7 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { SpotifyContextProvider } from '../src/context/spotify-context-provider';
+import { SpotifyContextProvider } from '../src';
 import MyPlaylists from './my-playlists';
 import UserProfile from './user-profile';
 

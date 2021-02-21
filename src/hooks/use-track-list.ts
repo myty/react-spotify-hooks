@@ -1,43 +1,44 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { SpotifyPaging, SpotifyPlaylist } from '../models/Spotify';
+import { SpotifyPaging } from '../models/Spotify/core';
+import { SpotifyTrackWithMetadata } from '../models/Spotify/track';
 import { useSpotify } from './use-spotify';
 
-export function useMyPlaylists() {
+export function useTracklist() {
     const { api } = useSpotify();
 
     const [loading, setLoading] = useState(true);
-    const [playlistPages, setPlaylistPagess] = useState<
-        SpotifyPaging<SpotifyPlaylist>[]
+    const [tracklistPages, setTracklistPagess] = useState<
+        SpotifyPaging<SpotifyTrackWithMetadata>[]
     >();
 
     const nextPageUrl = useMemo(() => {
-        if (playlistPages == null) {
+        if (tracklistPages == null) {
             return null;
         }
 
-        const lastPage = playlistPages[playlistPages.length - 1];
+        const lastPage = tracklistPages[tracklistPages.length - 1];
 
         return lastPage.next;
-    }, [playlistPages]);
+    }, [tracklistPages]);
 
     const hasMore = useMemo(() => {
         return nextPageUrl != null;
     }, [nextPageUrl]);
 
-    const playlists: SpotifyPlaylist[] = useMemo(() => {
-        return playlistPages?.flatMap(page => page.items) ?? [];
-    }, [playlistPages]);
+    const tracklists: SpotifyTrackWithMetadata[] = useMemo(() => {
+        return tracklistPages?.flatMap(page => page.items) ?? [];
+    }, [tracklistPages]);
 
     const loadData = useCallback(
         async (fetchUrl: string = 'me/playlists') => {
             setLoading(true);
 
-            const pageResult = await api<SpotifyPaging<SpotifyPlaylist>>(
-                fetchUrl
-            );
+            const pageResult = await api<
+                SpotifyPaging<SpotifyTrackWithMetadata>
+            >(fetchUrl);
 
             if (pageResult != null) {
-                setPlaylistPagess(prev => {
+                setTracklistPagess(prev => {
                     if (prev == null || pageResult.previous == null) {
                         return [pageResult];
                     }
@@ -63,7 +64,7 @@ export function useMyPlaylists() {
     }, [loadData]);
 
     return {
-        playlists,
+        tracklists,
         hasMore,
         loading,
         refresh: () => {

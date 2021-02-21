@@ -1,56 +1,48 @@
-import { useContext, useCallback } from 'react';
-import {
-    authenticate,
-    getAccessToken,
-} from '../context/spotify-authentication';
+import axios from 'axios';
+import { useContext, useCallback, useMemo } from 'react';
+import { authenticate } from '../spotify/authenticate';
 import { SpotifyContext } from '../context/spotify-context-provider';
-import { SpotifyPaging } from '../models/Spotify/core';
-import { SpotifyTrackWithMetadata } from '../models/Spotify/track';
+import useToken from './use-token';
 
 const SPOTIFY_BASE_API_URI = 'https://api.spotify.com/v1';
 
 export function useSpotify() {
     const { clientId, onError, scope } = useContext(SpotifyContext);
+    const { accessToken, tokenType } = useToken();
+
+    const spotifyApi = useMemo(
+        () =>
+            axios.create({
+                baseURL: SPOTIFY_BASE_API_URI,
+                headers: { Authorization: `${tokenType} ${accessToken}` },
+                validateStatus: status => status < 500,
+            }),
+        [accessToken, tokenType]
+    );
 
     const api = useCallback(
-        async <T = any>(fetchUrl: string): Promise<T | null> => {
+        async <T = any>(fetchUrl: string): Promise<T | null | undefined> => {
             try {
-                const { tokenType, accessToken } = getAccessToken() ?? {};
-
                 if (accessToken == null || tokenType == null) {
                     authenticate(clientId, scope);
+                    return;
                 }
 
-                const prependBaseUrl = fetchUrl?.substr(0, 4) !== 'http';
+                const response = await spotifyApi.get<T>(fetchUrl);
 
-                const formattedUrl = prependBaseUrl
-                    ? `${SPOTIFY_BASE_API_URI}/${fetchUrl}`
-                    : fetchUrl;
-
-                const response = await fetch(formattedUrl, {
-                    headers: {
-                        Authorization: `${tokenType} ${accessToken}`,
-                    },
-                });
-
-                // Check if unauthenticated user
-                if (response.status === 401) {
+                if (401 === response.status) {
                     authenticate(clientId, scope);
+                    return;
                 }
 
-                return response.json();
+                return response.data;
             } catch (error) {
                 onError(error);
             }
 
             return null;
         },
-        [clientId, onError, scope]
-    );
-
-    const getTracklist = useCallback(
-        (url: string) => api<SpotifyPaging<SpotifyTrackWithMetadata>>(url),
-        [api]
+        [accessToken, clientId, onError, scope, spotifyApi, tokenType]
     );
 
     return {
@@ -58,6 +50,5 @@ export function useSpotify() {
         clientId,
         onError,
         scope,
-        getTracklist,
     };
 }

@@ -1,5 +1,5 @@
+import useToken from '../hooks/use-token';
 import * as React from 'react';
-import { setAccessToken } from './spotify-authentication';
 
 interface ISpotifyContext {
     clientId: string;
@@ -19,6 +19,8 @@ export function SpotifyContextProvider({
     onError,
     scope,
 }: React.PropsWithChildren<ISpotifyContext>) {
+    const { setToken } = useToken();
+
     try {
         const params = window.location.hash
             .substr(1)
@@ -27,7 +29,7 @@ export function SpotifyContextProvider({
             .reduce<any>((pre, [key, value]) => ({ ...pre, [key]: value }), {});
 
         if (!!params.token_type && !!params.access_token) {
-            setAccessToken(params.token_type, params.access_token);
+            setToken(params.token_type, params.access_token);
 
             if (params.state) {
                 const state = decodeURIComponent(params.state);
